@@ -1,0 +1,84 @@
+.modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 25vw;
+	max-height: 80vh;
+	background-color: var(--secondary-background);
+	border-radius: 6px;
+	display: flex;
+	justify-content: center;
+	transition: all 0.3s ease-in-out;
+	z-index: 10;
+	overflow: auto;
+}
+
+.modal-open {
+	opacity: 1;
+	z-index: 10;
+	pointer-events: all;
+}
+
+.modal-closed {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 9;
+	transition: all 0.3s ease-in-out;
+}
+
+.modal-overlay-closed {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.modal-overlay-open {
+	opacity: 1;
+	pointer-events: all;
+	overflow: hidden;
+}
+
+.modal-close-btn {
+	height: 40px;
+	width: 40px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+	border-radius: 9999px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: all 0.3s ease-in-out;
+}
+
+.modal-close-btn:hover {
+	background-color: var(--primary-background);
+}
+
+.modal-close-btn svg {
+	height: 20px;
+	width: 20px;
+	color: var(--primary-text);
+}
+
+@media screen and (max-width: 1300px) {
+	.modal {
+		width: 50vw;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.modal {
+		width: 90vw;
+	}
+}

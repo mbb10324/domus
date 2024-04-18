@@ -4,24 +4,34 @@ import "./Menu.css";
 
 const darkTheme = `
 :root {
-    --primary-background: #141414;
-    --secondary-background: #1e1e1e;
+    --primary-background: #0f0f0f;
+    --secondary-background: #212121;
     --primary-text: #fefefe;
 }`;
 
 const lightTheme = `
 :root {
-    --primary-background: #fffff5;
-    --secondary-background: #e9e9df;
+    --primary-background: #fefefe;
+    --secondary-background: #ededec;
     --primary-text: #141414;
+}`;
+
+const githubTheme = `
+:root {
+    --primary-background: #0d1117;
+    --secondary-background: #161b22;
+    --primary-text: #c0c3c7;
 }`;
 
 type MenuProps = {
 	setOrderMode: (orderMode: boolean) => void;
+	setShowEditModal: (showEditModal: boolean) => void;
+	setShowFAQModal: (showFAQModal: boolean) => void;
+	setShowLegalsModal: (showLegalsModal: boolean) => void;
 };
 
 export default function Menu(props: MenuProps) {
-	const { setOrderMode } = props;
+	const { setOrderMode, setShowEditModal, setShowFAQModal, setShowLegalsModal } = props;
 	const [showMenu, setShowMenu] = useState(false);
 	const [theme, setTheme] = useState(localStorage.getItem("theme") || darkTheme);
 
@@ -45,8 +55,19 @@ export default function Menu(props: MenuProps) {
 					<button onClick={() => handleTheme(lightTheme)} className="hp-btn">
 						Light
 					</button>
+					<button onClick={() => handleTheme(githubTheme)} className="hp-btn">
+						Github
+					</button>
 				</div>
-				<button className="hp-btn">+ Add New Favorite</button>
+				<button
+					className="hp-btn"
+					onClick={() => {
+						setShowEditModal(true);
+						setShowMenu(false);
+					}}
+				>
+					+ Add New Favorite
+				</button>
 				<button
 					className="hp-btn"
 					onClick={() => {
@@ -56,11 +77,26 @@ export default function Menu(props: MenuProps) {
 				>
 					Order Favorites
 				</button>
+				<button
+					className="hp-btn"
+					onClick={() => {
+						setShowFAQModal(true);
+						setShowMenu(false);
+					}}
+				>
+					FAQ
+				</button>
+				<button
+					className="hp-btn"
+					onClick={() => {
+						setShowLegalsModal(true);
+						setShowMenu(false);
+					}}
+				>
+					Privacy & Terms
+				</button>
 			</div>
-			<div
-				className={`menu-overlay ${showMenu ? "menu-overlay-open" : "menu-overlay-closed"}`}
-				onClick={() => setShowMenu(false)}
-			/>
+			<div className={`menu-overlay ${showMenu ? "menu-overlay-open" : "menu-overlay-closed"}`} onClick={() => setShowMenu(false)} />
 			<style>{theme}</style>
 		</div>
 	);

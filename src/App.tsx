@@ -1,22 +1,38 @@
-import { mockWebsites } from "./mocksites";
 import Menu from "./menu/Menu";
 import Edit from "./edit/Edit";
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditModal from "./editModal/EditModal";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+import { FaArrowLeft, FaArrowRight, FaEarthAmericas } from "react-icons/fa6";
+import useBreakpoints from "./hooks/useBreakpoints";
+import FaqModal from "./faqModal/FaqModal";
+import LegalsModal from "./legalsModal/LegalsModal";
+
+export type Website = {
+	name: string;
+	url: string;
+};
 
 function App() {
+	const breakpoint = useBreakpoints(768);
 	const [showEdit, setShowEdit] = useState<number | undefined>();
 	const [showEditModal, setShowEditModal] = useState(false);
-	const [selectedLink, setSelectedLink] = useState(mockWebsites[0]);
+	const [showFAQModal, setShowFAQModal] = useState(false);
+	const [showLegalsModal, setShowLegalsModal] = useState(false);
+	const [selectedLink, setSelectedLink] = useState<Website | null>(null);
 	const [orderMode, setOrderMode] = useState(false);
-	const storedWebsites: { name: string; url: string; image: string }[] = localStorage.getItem("websites")
-		? JSON.parse(localStorage.getItem("websites")!)
-		: mockWebsites;
+	const storedWebsites: Website[] = localStorage.getItem("websites") ? JSON.parse(localStorage.getItem("websites")!) : [];
 	const [websites, setWebsites] = useState(storedWebsites);
+	const [longPressTimer, setLongPressTimer] = useState<number | null>(null);
+	const [isLongPress, setIsLongPress] = useState(false);
 
-	function handleMoveRight(website: { name: string; url: string; image: string }) {
+	useEffect(() => {
+		if (!showEditModal) {
+			setSelectedLink(null);
+		}
+	}, [showEditModal]);
+
+	function handleMoveRight(website: Website) {
 		// move the order of the website to the right in the array and setWebsites to update state
 		const index = websites.indexOf(website);
 		if (index === websites.length - 1) return;
@@ -24,9 +40,10 @@ function App() {
 		websites[index] = nextWebsite;
 		websites[index + 1] = website;
 		setWebsites([...websites]);
+		localStorage.setItem("websites", JSON.stringify(websites));
 	}
 
-	function handleMoveLeft(website: { name: string; url: string; image: string }) {
+	function handleMoveLeft(website: Website) {
 		// move the order of the website to the left in the array and setWebsites to update state
 		const index = websites.indexOf(website);
 		if (index === 0) return;
@@ -34,6 +51,28 @@ function App() {
 		websites[index] = previousWebsite;
 		websites[index - 1] = website;
 		setWebsites([...websites]);
+		localStorage.setItem("websites", JSON.stringify(websites));
+	}
+
+	function handleLongPressStart(website: Website, event: React.TouchEvent) {
+		const timer = setTimeout(() => {
+			event.preventDefault();
+			setShowEditModal(true);
+			setSelectedLink(website);
+			setIsLongPress(true);
+		}, 700);
+		setLongPressTimer(timer);
+	}
+
+	function handleLongPressEnd(event: React.TouchEvent) {
+		if (longPressTimer) {
+			clearTimeout(longPressTimer);
+			setLongPressTimer(null);
+		}
+		if (isLongPress) {
+			event.preventDefault();
+			setIsLongPress(false);
+		}
 	}
 
 	return (
@@ -41,13 +80,25 @@ function App() {
 			<div className="app">
 				<div className="content">
 					{websites.map((website, index) => (
-						<div className="link" onMouseEnter={() => setShowEdit(index)} onMouseLeave={() => setShowEdit(undefined)}>
-							{showEdit === index && (
-								<Edit setShowEditModal={setShowEditModal} thisLink={website} setSelectedLink={setSelectedLink} />
-							)}
+						<div
+							key={index}
+							className="link"
+							onMouseEnter={() => !breakpoint && setShowEdit(index)}
+							onMouseLeave={() => !breakpoint && setShowEdit(undefined)}
+							onTouchStart={(e) => handleLongPressStart(website, e)}
+							onTouchEnd={handleLongPressEnd}
+						>
+							{showEdit === index && <Edit setShowEditModal={setShowEditModal} thisLink={website} setSelectedLink={setSelectedLink} />}
 							<a href={website.url} target="_blank" rel="noreferrer" key={index} className="link-wrapper">
 								<div className="img-wrapper">
-									<img src={website.image} alt={website.name} />
+									<img
+										src={`https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${website.url}/&size=32`}
+										alt={"No Icon"}
+										onError={() => {
+											console.log("Error");
+											<FaEarthAmericas />;
+										}}
+									/>
 								</div>
 								<h3>{website.name}</h3>
 							</a>
@@ -63,21 +114,38 @@ function App() {
 							)}
 						</div>
 					))}
+					{websites.length === 0 && (
+						<>
+							<button className="hp-btn hp-btn-light" onClick={() => setShowEditModal(true)}>
+								+ Add New Favorite
+							</button>
+							<button className="hp-btn hp-btn-light" onClick={() => setShowFAQModal(true)}>
+								Read Our FAQ To Get Started
+							</button>
+						</>
+					)}
 				</div>
 				{orderMode && (
-					<button className="hp-btn hp-btn-light" onClick={() => setOrderMode(!orderMode)}>
-						Save Order
+					<button className="hp-btn hp-btn-light save-btn" onClick={() => setOrderMode(!orderMode)}>
+						Exit Order Mode
 					</button>
 				)}
-				{websites.length === 0 && <button className="hp-btn hp-btn-light">+ Add New Favorite</button>}
 			</div>
 			<EditModal
-				key={selectedLink.name}
+				key={selectedLink?.name}
 				showEditModal={showEditModal}
 				setShowEditModal={setShowEditModal}
 				link={selectedLink}
+				websites={websites}
 			/>
-			<Menu setOrderMode={setOrderMode} />
+			<FaqModal showFAQModal={showFAQModal} setShowFAQModal={setShowFAQModal} />
+			<LegalsModal showLegalsModal={showLegalsModal} setShowLegalsModal={setShowLegalsModal} />
+			<Menu
+				setOrderMode={setOrderMode}
+				setShowEditModal={setShowEditModal}
+				setShowFAQModal={setShowFAQModal}
+				setShowLegalsModal={setShowLegalsModal}
+			/>
 		</>
 	);
 }

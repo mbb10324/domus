@@ -1,0 +1,28 @@
+.menu-text {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	animation: fadeIn 0.5s ease-in-out;
+	margin-top: 20px;
+	padding: 20px;
+	height: fit-content;
+}
+
+.menu-text h3 {
+	color: var(--primary-text);
+	font-size: 20px;
+	font-weight: 700;
+	text-align: center;
+}
+
+.menu-text h4 {
+	color: var(--primary-text);
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.menu-text p {
+	color: var(--primary-text);
+	font-size: 16px;
+	font-weight: 400;
+}

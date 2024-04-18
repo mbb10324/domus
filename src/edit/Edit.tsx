@@ -1,14 +1,11 @@
 import { FaEllipsisVertical } from "react-icons/fa6";
 import "./Edit.css";
+import { Website } from "../App";
 
 type EditProps = {
-	thisLink: {
-		name: string;
-		url: string;
-		image: string;
-	};
+	thisLink: Website;
 	setShowEditModal: (showEditModal: boolean) => void;
-	setSelectedLink: (link: { name: string; url: string; image: string }) => void;
+	setSelectedLink: (link: Website) => void;
 };
 
 export default function Edit(props: EditProps) {

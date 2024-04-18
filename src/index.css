@@ -4,6 +4,10 @@
 	box-sizing: border-box;
 }
 
+body {
+	overflow-x: hidden;
+}
+
 :root {
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 	font-weight: 300;
@@ -12,4 +16,32 @@
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.hp-btn {
+	background-color: var(--primary-background);
+	color: var(--primary-text);
+	border: 1px solid var(--primary-background);
+	font-size: 18px;
+	outline: none;
+	border-radius: 6px;
+	padding: 10px;
+	cursor: pointer;
+	transition: border 0.3s ease-in-out;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.hp-btn:hover {
+	border: 1px solid var(--primary-text);
+}
+
+.hp-btn-light {
+	background-color: var(--secondary-background);
+	border: 1px solid var(--secondary-background);
+}
+
+.hp-btn-selected {
+	border: 1px solid var(--primary-text);
+	pointer-events: none;
 }

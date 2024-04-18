@@ -1,53 +1,73 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./EditModal.css";
-import { FaX } from "react-icons/fa6";
+import { Website } from "../App";
+import Modal from "../modal/Modal";
 
 type EditModalProps = {
 	showEditModal: boolean;
 	setShowEditModal: (showEditModal: boolean) => void;
-	link: {
-		name: string;
-		url: string;
-		image: string;
-	};
+	link: Website | null;
+	websites: Website[];
 };
 
 export default function EditModal(props: EditModalProps) {
-	const { link, showEditModal, setShowEditModal } = props;
-	const [name, setName] = useState(link.name);
-	const [url, setUrl] = useState(link.url);
-	const [image, setImage] = useState(link.image);
+	const { websites, link, showEditModal, setShowEditModal } = props;
+	const [name, setName] = useState(link?.name || "");
+	const [url, setUrl] = useState(link?.url || "");
+
+	useEffect(() => {
+		if (showEditModal) {
+			document.body.style.overflow = "hidden";
+		} else {
+			document.body.style.overflow = "auto";
+		}
+	}, [showEditModal]);
+
+	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		const updatedWebsites = websites.map((website) => {
+			if (website === link) {
+				return {
+					name,
+					url,
+				};
+			}
+			return website;
+		});
+		if (!link) {
+			updatedWebsites.push({ name, url });
+		}
+		localStorage.setItem("websites", JSON.stringify(updatedWebsites));
+		window.location.reload();
+	}
+
+	function handleRemove() {
+		const updatedWebsites = websites.filter((website) => website !== link);
+		localStorage.setItem("websites", JSON.stringify(updatedWebsites));
+		window.location.reload();
+	}
 
 	return (
-		<>
-			<div className={`edit-modal ${showEditModal ? "edit-modal-open" : "edit-modal-closed"}`}>
-				<div className="edit-modal-content">
-					<h2>Edit Link</h2>
-					<form>
-						<div className="input-group">
-							<label htmlFor="name">Name:</label>
-							<input name="name" id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
-						</div>
-						<div className="input-group">
-							<label htmlFor="url">URL:</label>
-							<input name="url" id="url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} />
-						</div>
-						<div className="input-group">
-							<label htmlFor="image">Image:</label>
-							<input name="image" id="image" type="url" value={image} onChange={(e) => setImage(e.target.value)} />
-						</div>
-						<button type="submit">Save</button>
-						<button type="button">Remove</button>
-					</form>
-				</div>
-				<div className="edit-close-btn" onClick={() => setShowEditModal(false)}>
-					<FaX />
-				</div>
+		<Modal showModal={showEditModal} setShowModal={setShowEditModal}>
+			<div className="edit-modal-content">
+				<h2>{link ? "Edit Favorite" : "Add Favorite"}</h2>
+				<form onSubmit={handleSubmit}>
+					<div className="input-group">
+						<label htmlFor="name">Name:</label>
+						<input name="name" id="name" type="text" maxLength={40} value={name} onChange={(e) => setName(e.target.value)} />
+					</div>
+					<div className="input-group">
+						<label htmlFor="url">URL:</label>
+						<input name="url" id="url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} />
+					</div>
+					<button type="submit">Save</button>
+					{link && (
+						<button type="button" onClick={handleRemove}>
+							Remove
+						</button>
+					)}
+				</form>
 			</div>
-			<div
-				className={`edit-overlay ${showEditModal ? "edit-overlay-open" : "edit-overlay-closed"}`}
-				onClick={() => setShowEditModal(false)}
-			/>
-		</>
+		</Modal>
 	);
 }

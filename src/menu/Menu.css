@@ -17,7 +17,7 @@
 	align-items: center;
 	transition: all 0.2s ease-in-out;
 	user-select: none;
-	z-index: 1000;
+	z-index: 7;
 }
 
 .open-btn:hover {
@@ -40,15 +40,17 @@
 	top: 0;
 	right: 0;
 	width: 25vw;
+	max-height: 100%;
 	margin: 15px;
 	padding: 20px;
 	border-radius: 6px;
 	background-color: var(--secondary-background);
 	transition: all 0.3s ease-in-out;
-	z-index: 10;
+	z-index: 6;
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
+	overflow: auto;
 }
 
 .menu-open {
@@ -71,7 +73,7 @@
 	width: 100vw;
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 9;
+	z-index: 5;
 	transition: all 0.3s ease-in-out;
 }
 
@@ -97,25 +99,13 @@
 	font-size: 18px;
 }
 
-.hp-btn {
-	background-color: var(--primary-background);
-	color: var(--primary-text);
-	border: 1px solid var(--primary-background);
-	font-size: 18px;
-	outline: none;
-	border-radius: 6px;
-	padding: 10px;
-	cursor: pointer;
-	transition: border 0.3s ease-in-out;
-}
-
-.hp-btn:hover {
-	border: 1px solid var(--primary-text);
-}
-
-.hp-btn-light {
-	background-color: var(--secondary-background);
-	border: 1px solid var(--secondary-background);
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 @keyframes zoomIn {
@@ -127,9 +117,24 @@
 	}
 }
 
+@media screen and (max-width: 1400px) {
+	.menu-wrapper {
+		width: 45vw;
+	}
+}
+
 @media screen and (max-width: 768px) {
 	.menu-wrapper {
 		width: 100vw;
+		margin: 0;
+		padding-top: 50px;
+		border-radius: 0;
+	}
+	.menu-open {
+		transform: translateY(0);
+	}
+	.menu-closed {
+		transform: translateY(-100%);
 	}
 	.open-btn:hover {
 		background-color: var(--primary-background);
@@ -138,8 +143,5 @@
 	.close-btn:hover {
 		background-color: var(--secondary-background);
 		scale: 1;
-	}
-	.menu-overlay {
-		display: none;
 	}
 }
