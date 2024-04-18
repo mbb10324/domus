@@ -3,7 +3,7 @@ import Edit from "./edit/Edit";
 import "./App.css";
 import { useEffect, useState } from "react";
 import EditModal from "./editModal/EditModal";
-import { FaArrowLeft, FaArrowRight, FaEarthAmericas } from "react-icons/fa6";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import useBreakpoints from "./hooks/useBreakpoints";
 import FaqModal from "./faqModal/FaqModal";
 import LegalsModal from "./legalsModal/LegalsModal";
@@ -21,7 +21,9 @@ function App() {
 	const [showLegalsModal, setShowLegalsModal] = useState(false);
 	const [selectedLink, setSelectedLink] = useState<Website | null>(null);
 	const [orderMode, setOrderMode] = useState(false);
-	const storedWebsites: Website[] = localStorage.getItem("websites") ? JSON.parse(localStorage.getItem("websites")!) : [];
+	const storedWebsites: Website[] = localStorage.getItem("websites")
+		? JSON.parse(localStorage.getItem("websites")!)
+		: [];
 	const [websites, setWebsites] = useState(storedWebsites);
 	const [longPressTimer, setLongPressTimer] = useState<number | null>(null);
 	const [isLongPress, setIsLongPress] = useState(false);
@@ -88,19 +90,25 @@ function App() {
 							onTouchStart={(e) => handleLongPressStart(website, e)}
 							onTouchEnd={handleLongPressEnd}
 						>
-							{showEdit === index && <Edit setShowEditModal={setShowEditModal} thisLink={website} setSelectedLink={setSelectedLink} />}
-							<a href={website.url} target="_blank" rel="noreferrer" key={index} className="link-wrapper">
+							{showEdit === index && (
+								<Edit setShowEditModal={setShowEditModal} thisLink={website} setSelectedLink={setSelectedLink} />
+							)}
+							<a
+								href={website.url}
+								target="_blank"
+								rel="noreferrer"
+								key={index}
+								className="link-wrapper"
+								onContextMenu={(e) => e.preventDefault()}
+							>
 								<div className="img-wrapper">
 									<img
 										src={`https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${website.url}/&size=32`}
-										alt={"No Icon"}
-										onError={() => {
-											console.log("Error");
-											<FaEarthAmericas />;
-										}}
+										alt="favicon"
+										onContextMenu={(e) => e.preventDefault()}
 									/>
 								</div>
-								<h3>{website.name}</h3>
+								<h3 onContextMenu={(e) => e.preventDefault()}>{website.name}</h3>
 							</a>
 							{orderMode && (
 								<div className="order">

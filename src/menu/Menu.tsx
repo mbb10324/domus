@@ -49,13 +49,22 @@ export default function Menu(props: MenuProps) {
 				<h2>Menu</h2>
 				<div className="theme">
 					<h3>Theme:</h3>
-					<button onClick={() => handleTheme(darkTheme)} className="hp-btn">
+					<button
+						onClick={() => handleTheme(darkTheme)}
+						className={`hp-btn ${theme === darkTheme ? "hp-btn-selected" : ""}`}
+					>
 						Dark
 					</button>
-					<button onClick={() => handleTheme(lightTheme)} className="hp-btn">
+					<button
+						onClick={() => handleTheme(lightTheme)}
+						className={`hp-btn ${theme === lightTheme ? "hp-btn-selected" : ""}`}
+					>
 						Light
 					</button>
-					<button onClick={() => handleTheme(githubTheme)} className="hp-btn">
+					<button
+						onClick={() => handleTheme(githubTheme)}
+						className={`hp-btn ${theme === githubTheme ? "hp-btn-selected" : ""}`}
+					>
 						Github
 					</button>
 				</div>
@@ -96,7 +105,10 @@ export default function Menu(props: MenuProps) {
 					Privacy & Terms
 				</button>
 			</div>
-			<div className={`menu-overlay ${showMenu ? "menu-overlay-open" : "menu-overlay-closed"}`} onClick={() => setShowMenu(false)} />
+			<div
+				className={`menu-overlay ${showMenu ? "menu-overlay-open" : "menu-overlay-closed"}`}
+				onClick={() => setShowMenu(false)}
+			/>
 			<style>{theme}</style>
 		</div>
 	);
