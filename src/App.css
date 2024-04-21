@@ -33,6 +33,7 @@
 	border: 1px solid var(--secondary-background);
 	background-color: var(--primary-background);
 	overflow: hidden;
+	transition: all 0.3s ease-in-out;
 }
 
 .google-search:focus-within {
@@ -65,17 +66,17 @@
 	border: none;
 	cursor: pointer;
 	border-left: 1px solid var(--primary-background);
+	z-index: 3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.google-search-icon {
-	position: absolute;
-	right: 0;
-	height: 20px;
-	width: 20px;
-	margin-right: 10px;
+.google-btn svg {
+	height: 24px;
+	width: 24px;
 	color: var(--primary-text);
 	z-index: 2;
-	cursor: pointer;
 }
 
 .save-btn {

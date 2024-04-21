@@ -4,7 +4,7 @@ import LegalsModal from "./legalsModal/LegalsModal";
 import EditModal from "./editModal/EditModal";
 import FaqModal from "./faqModal/FaqModal";
 import { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FiSearch } from "react-icons/fi";
 import Menu from "./menu/Menu";
 import Edit from "./edit/Edit";
 import "./App.css";
@@ -83,8 +83,9 @@ function App() {
 				{includeSearch === "Yes" && (
 					<form method="GET" action="https://www.google.com/search" className="google-search">
 						<input name="q" type="text" className="google-input" placeholder="Google Search..." />
-						<input type="submit" value="" className="google-btn" />
-						<FaSearch className="google-search-icon" />
+						<button type="submit" className="google-btn">
+							<FiSearch />
+						</button>
 					</form>
 				)}
 				<div className="content">
