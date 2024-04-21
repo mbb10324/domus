@@ -1,12 +1,13 @@
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+import useBreakpoints from "./hooks/useBreakpoints";
+import LegalsModal from "./legalsModal/LegalsModal";
+import EditModal from "./editModal/EditModal";
+import FaqModal from "./faqModal/FaqModal";
+import { useEffect, useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import Menu from "./menu/Menu";
 import Edit from "./edit/Edit";
 import "./App.css";
-import { useEffect, useState } from "react";
-import EditModal from "./editModal/EditModal";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
-import useBreakpoints from "./hooks/useBreakpoints";
-import FaqModal from "./faqModal/FaqModal";
-import LegalsModal from "./legalsModal/LegalsModal";
 
 export type Website = {
 	name: string;
@@ -25,6 +26,7 @@ function App() {
 	const [websites, setWebsites] = useState(storedWebsites);
 	const [longPressTimer, setLongPressTimer] = useState<number | null>(null);
 	const [isLongPress, setIsLongPress] = useState(false);
+	const includeSearch = localStorage.getItem("includeSearch") || "Yes";
 
 	useEffect(() => {
 		if (!showEditModal) {
@@ -78,6 +80,13 @@ function App() {
 	return (
 		<>
 			<div className="app">
+				{includeSearch === "Yes" && (
+					<form method="GET" action="https://www.google.com/search" className="google-search">
+						<input name="q" type="text" className="google-input" placeholder="Google Search..." />
+						<input type="submit" value="" className="google-btn" />
+						<FaSearch className="google-search-icon" />
+					</form>
+				)}
 				<div className="content">
 					{websites.map((website, index) => (
 						<div

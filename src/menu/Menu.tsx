@@ -34,6 +34,7 @@ export default function Menu(props: MenuProps) {
 	const { setOrderMode, setShowEditModal, setShowFAQModal, setShowLegalsModal } = props;
 	const [showMenu, setShowMenu] = useState(false);
 	const [theme, setTheme] = useState(localStorage.getItem("theme") || darkTheme);
+	const includeSearch = localStorage.getItem("includeSearch") || "Yes";
 
 	function handleTheme(theme: string) {
 		localStorage.setItem("theme", theme);
@@ -49,23 +50,35 @@ export default function Menu(props: MenuProps) {
 				<h2>Menu</h2>
 				<div className="theme">
 					<h3>Theme:</h3>
-					<button
-						onClick={() => handleTheme(darkTheme)}
-						className={`hp-btn ${theme === darkTheme ? "hp-btn-selected" : ""}`}
-					>
+					<button onClick={() => handleTheme(darkTheme)} className={`hp-btn ${theme === darkTheme ? "hp-btn-selected" : ""}`}>
 						Dark
 					</button>
-					<button
-						onClick={() => handleTheme(lightTheme)}
-						className={`hp-btn ${theme === lightTheme ? "hp-btn-selected" : ""}`}
-					>
+					<button onClick={() => handleTheme(lightTheme)} className={`hp-btn ${theme === lightTheme ? "hp-btn-selected" : ""}`}>
 						Light
 					</button>
-					<button
-						onClick={() => handleTheme(githubTheme)}
-						className={`hp-btn ${theme === githubTheme ? "hp-btn-selected" : ""}`}
-					>
+					<button onClick={() => handleTheme(githubTheme)} className={`hp-btn ${theme === githubTheme ? "hp-btn-selected" : ""}`}>
 						Github
+					</button>
+				</div>
+				<div className="theme">
+					<h3>Include Search Bar?:</h3>
+					<button
+						className={`hp-btn ${includeSearch === "Yes" ? "hp-btn-selected" : ""}`}
+						onClick={() => {
+							localStorage.setItem("includeSearch", "Yes");
+							window.location.reload();
+						}}
+					>
+						Yes
+					</button>
+					<button
+						className={`hp-btn ${includeSearch === "No" ? "hp-btn-selected" : ""}`}
+						onClick={() => {
+							localStorage.setItem("includeSearch", "No");
+							window.location.reload();
+						}}
+					>
+						No
 					</button>
 				</div>
 				<button
@@ -105,10 +118,7 @@ export default function Menu(props: MenuProps) {
 					Privacy & Terms
 				</button>
 			</div>
-			<div
-				className={`menu-overlay ${showMenu ? "menu-overlay-open" : "menu-overlay-closed"}`}
-				onClick={() => setShowMenu(false)}
-			/>
+			<div className={`menu-overlay ${showMenu ? "menu-overlay-open" : "menu-overlay-closed"}`} onClick={() => setShowMenu(false)} />
 			<style>{theme}</style>
 		</div>
 	);
