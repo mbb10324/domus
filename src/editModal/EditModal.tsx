@@ -39,7 +39,7 @@ export default function EditModal(props: EditModalProps) {
 			}
 			return website;
 		});
-		if (!link) {
+		if (link.name.length === 0) {
 			updatedWebsites.push({ name, url });
 		}
 		localStorage.setItem("websites", JSON.stringify(updatedWebsites));
