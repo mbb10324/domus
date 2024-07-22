@@ -20,7 +20,7 @@ function App() {
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showFAQModal, setShowFAQModal] = useState(false);
 	const [showLegalsModal, setShowLegalsModal] = useState(false);
-	const [selectedLink, setSelectedLink] = useState<Website | null>(null);
+	const [selectedLink, setSelectedLink] = useState<Website>({ name: "", url: "" });
 	const [orderMode, setOrderMode] = useState(false);
 	const storedWebsites: Website[] = localStorage.getItem("websites") ? JSON.parse(localStorage.getItem("websites")!) : [];
 	const [websites, setWebsites] = useState(storedWebsites);
@@ -31,7 +31,7 @@ function App() {
 	useEffect(() => {
 		if (!showEditModal) {
 			setTimeout(() => {
-				setSelectedLink(null);
+				setSelectedLink({ name: "", url: "" });
 			}, 500);
 		}
 	}, [showEditModal]);

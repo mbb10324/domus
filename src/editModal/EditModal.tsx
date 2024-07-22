@@ -6,7 +6,7 @@ import Modal from "../modal/Modal";
 type EditModalProps = {
 	showEditModal: boolean;
 	setShowEditModal: (showEditModal: boolean) => void;
-	link: Website | null;
+	link: Website;
 	websites: Website[];
 };
 
@@ -55,7 +55,7 @@ export default function EditModal(props: EditModalProps) {
 	return (
 		<Modal showModal={showEditModal} setShowModal={setShowEditModal}>
 			<div className="edit-modal-content">
-				<h2>{link ? "Edit Favorite" : "Add Favorite"}</h2>
+				<h2>{link.name.length > 0 ? "Edit Favorite" : "Add Favorite"}</h2>
 				<form onSubmit={handleSubmit}>
 					<div className="input-group">
 						<label htmlFor="name">Name:</label>
@@ -66,7 +66,7 @@ export default function EditModal(props: EditModalProps) {
 						<input name="url" id="url" type="url" value={url} onChange={(e) => setUrl(e.target.value)} />
 					</div>
 					<button type="submit">Save</button>
-					{link && (
+					{link.name.length > 0 && (
 						<button type="button" onClick={handleRemove}>
 							Remove
 						</button>
