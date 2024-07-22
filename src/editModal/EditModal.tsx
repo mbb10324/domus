@@ -12,8 +12,8 @@ type EditModalProps = {
 
 export default function EditModal(props: EditModalProps) {
 	const { websites, link, showEditModal, setShowEditModal } = props;
-	const [name, setName] = useState(link?.name || "");
-	const [url, setUrl] = useState(link?.url || "");
+	const [name, setName] = useState("");
+	const [url, setUrl] = useState("");
 
 	useEffect(() => {
 		if (showEditModal) {
@@ -21,6 +21,11 @@ export default function EditModal(props: EditModalProps) {
 		} else {
 			document.body.style.overflow = "auto";
 		}
+		if (link) {
+			setName(link.name);
+			setUrl(link.url);
+		}
+		// eslint-disable-next-line
 	}, [showEditModal]);
 
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

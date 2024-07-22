@@ -30,7 +30,9 @@ function App() {
 
 	useEffect(() => {
 		if (!showEditModal) {
-			setSelectedLink(null);
+			setTimeout(() => {
+				setSelectedLink(null);
+			}, 500);
 		}
 	}, [showEditModal]);
 
@@ -138,13 +140,7 @@ function App() {
 					</button>
 				)}
 			</div>
-			<EditModal
-				key={selectedLink?.name}
-				showEditModal={showEditModal}
-				setShowEditModal={setShowEditModal}
-				link={selectedLink}
-				websites={websites}
-			/>
+			<EditModal showEditModal={showEditModal} setShowEditModal={setShowEditModal} link={selectedLink} websites={websites} />
 			<FaqModal showFAQModal={showFAQModal} setShowFAQModal={setShowFAQModal} />
 			<LegalsModal showLegalsModal={showLegalsModal} setShowLegalsModal={setShowLegalsModal} />
 			<Menu
